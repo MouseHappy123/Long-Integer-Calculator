@@ -1,43 +1,46 @@
 #include <iostream>
 #include <stack>
+#include <cstring>
 #include<string>
+#include<cmath>
+#include<cstdlib>
 #include <algorithm>
-using namespace std; 
+using namespace std;
 typedef struct node
-{  
+{
 	int data;
 	node *next;
 }Node, *LinkList;
-//ÅĞ¶ÏÏà¼õÊ±Á½¸öÊıµÄ´óĞ¡¹ØÏµ
-int judge(string a,string b)
+//åˆ¤æ–­ç›¸å‡æ—¶ä¸¤ä¸ªæ•°çš„å¤§å°å…³ç³»
+int judge(string a, string b)
 {
-    int i;
-    if (a.size()<b.size()) {
-        return 0;
-    }
-    else if (a.size()> b.size()) {
-        return 1;
-    }
+	int i;
+	if (a.size() < b.size()) {
+		return 0;
+	}
+	else if (a.size() > b.size()) {
+		return 1;
+	}
 
-    for (i = 0; i <a.size(); i++) {
-        if (a[i] < b[i]) {
-            return 0;
-        }
-    }
-    return 1;
+	for (i = 0; i < a.size(); i++) {
+		if (a[i] < b[i]) {
+			return 0;
+		}
+	}
+	return -1;
 }
-//½¨Á¢Á´±í
+//å»ºç«‹é“¾è¡¨
 Node* createList(string a, int n)
 {
 	Node *head, *endPtr;
 	head = endPtr = NULL;
-	
-	for(int i=n-1;i>=0;i--)
+
+	for (int i = n - 1;i >= 0;i--)
 	{
 		Node *temp = new Node;
-		temp->data = a[i]-'0';
+		temp->data = a[i] - '0';
 		temp->next = NULL;
-		if(i==n-1)
+		if (i == n - 1)
 		{
 			head = endPtr = temp;
 		}
@@ -47,343 +50,522 @@ Node* createList(string a, int n)
 			endPtr = temp;
 		}
 	}
- 
+
 	return head;
 }
-//Êä³ö½á¹û
+//è¾“å‡ºç»“æœ
 void PrintListReversing(LinkList pHead)
 {
 	stack<Node*> nodes;
 	Node* pNode = pHead;
-	int flag=0,num=0;
-	if(pNode==NULL)
+	int flag = 0, num = 0;
+	if (pNode == NULL)
 		return;
- 
-	while(pNode!=NULL)   
-	{   num++;
+
+	while (pNode != NULL)
+	{
+		num++;
 		nodes.push(pNode);
 		pNode = pNode->next;
 	}
- 
-	while(!nodes.empty())   
-	{   flag++;
+
+	while (!nodes.empty())
+	{
+		flag++;
 		pNode = nodes.top();
-		if(flag==1){if(pNode->data==0){ do{nodes.pop();pNode = nodes.top();flag++;}while(pNode->data==0);}}
-		cout<<pNode->data;
-		nodes.pop();   
-		if(!((num-flag)%3)&&flag!=num)cout<<',';
+		if (flag == 1 && num != 1) { if (pNode->data == 0) { do { nodes.pop();pNode = nodes.top();flag++; } 
+		while (pNode->data == 0); } }
+		cout << pNode->data;
+		nodes.pop();
+		if (!((num - flag) % 3) && flag != num)cout << ',';
 	}
 }
 #define N 100000001
-int dd[N],ds[N],qu[N];
-//´óÊıÏà¼Ó
+int dd[N], ds[N], qu[N];
+//å¤§æ•°ç›¸åŠ 
 Node *ListAdd(Node* L1, Node* L2)
 {
-	if(L1==NULL)
+	if (L1 == NULL)
 		return L2;
-	if(L2==NULL)
+	if (L2 == NULL)
 		return L1;
- 
-	Node *ptr1 = L1, *ptr2 = L2, *ResultPtr=NULL, *TmpPtr=NULL;
+
+	Node *ptr1 = L1, *ptr2 = L2, *ResultPtr = NULL, *TmpPtr = NULL;
 	int carry = 0;
- 
+
 	Node *p_node = new Node();
-	p_node->data = (L1->data+L2->data)%10;
+	p_node->data = (L1->data + L2->data) % 10;
 	p_node->next = NULL;
-	carry = (L1->data+L2->data)/10;
+	carry = (L1->data + L2->data) / 10;
 	ResultPtr = TmpPtr = p_node;
 	TmpPtr->next = NULL;
 	L1 = L1->next;
 	L2 = L2->next;
- 
-	while(L1 && L2)
+
+	while (L1 && L2)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
-		int tmp = L1->data+L2->data+carry;
-		carry = tmp/10;
-		pNode->data = tmp%10;
+
+		int tmp = L1->data + L2->data + carry;
+		carry = tmp / 10;
+		pNode->data = tmp % 10;
 		pNode->next = NULL;
- 
+
 		TmpPtr = TmpPtr->next;
 		L1 = L1->next;
 		L2 = L2->next;
 	}
- 
-	while(L1)
+
+	while (L1)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
-		int tmp = L1->data+carry;
-		carry = tmp/10;
-		pNode->data = tmp%10;
+
+		int tmp = L1->data + carry;
+		carry = tmp / 10;
+		pNode->data = tmp % 10;
 		pNode->next = NULL;
- 
+
 		TmpPtr = TmpPtr->next;
 		L1 = L1->next;
 	}
-	while(L2)
+	while (L2)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
-		int tmp = L2->data+carry;
-		carry = tmp/10;
-		pNode->data = tmp%10;
+
+		int tmp = L2->data + carry;
+		carry = tmp / 10;
+		pNode->data = tmp % 10;
 		pNode->next = NULL;
- 
+
 		TmpPtr = TmpPtr->next;
 		L2 = L2->next;
 	}
- 
-	if(carry)
+
+	if (carry)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
+
 		pNode->data = carry;
 		pNode->next = NULL;
 	}
- 
+
 	return ResultPtr;
 }
-//´óÊıÏà¼õ
+//å¤§æ•°ç›¸å‡
 Node *Listsubstract(Node* L1, Node* L2)
 {
-	if(L1==NULL)
+	if (L1 == NULL)
 		return L2;
-	if(L2==NULL)
+	if (L2 == NULL)
 		return L1;
- 
-	Node *ptr1 = L1, *ptr2 = L2, *ResultPtr=NULL, *TmpPtr=NULL;
+
+	Node *ptr1 = L1, *ptr2 = L2, *ResultPtr = NULL, *TmpPtr = NULL;
 	int carry = 0;
- 
+
 	Node *p_node = new Node();
-	p_node->data = (L1->data-L2->data);
-	if(p_node->data<0){
-		p_node->data+=10;
-		carry=-1;}
-	else carry=0;
+	p_node->data = (L1->data - L2->data);
+	if (p_node->data < 0) {
+		p_node->data += 10;
+		carry = -1;
+	}
+	else carry = 0;
 	p_node->next = NULL;
 	ResultPtr = TmpPtr = p_node;
 	TmpPtr->next = NULL;
 	L1 = L1->next;
 	L2 = L2->next;
- 
-	while(L1 && L2)
+
+	while (L1 && L2)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
-		int tmp = L1->data-L2->data+carry;
-		if(tmp<0){tmp+=10;
-		carry=-1;}
-		else carry=0;
+
+		int tmp = L1->data - L2->data + carry;
+		if (tmp < 0) {
+			tmp += 10;
+			carry = -1;
+		}
+		else carry = 0;
 		pNode->data = tmp;
 		pNode->next = NULL;
- 
+
 		TmpPtr = TmpPtr->next;
 		L1 = L1->next;
 		L2 = L2->next;
 	}
- 
-	while(L1)
+
+	while (L1)
 	{
 		Node *pNode = new Node();
 		TmpPtr->next = pNode;
- 
-		int tmp = L1->data+carry;
-		if(tmp<0){tmp+=10;
-		carry=-1;}
-		else carry=0;
+
+		int tmp = L1->data + carry;
+		if (tmp < 0) {
+			tmp += 10;
+			carry = -1;
+		}
+		else carry = 0;
 		pNode->data = tmp;
 		pNode->next = NULL;
- 
+
 		TmpPtr = TmpPtr->next;
 		L1 = L1->next;
 	}
 
 	return ResultPtr;
-} 
-//´óÊıÏà³Ë
-void multi(string a,string b,int len1,int len2)
-{string product="";
-int carry = 0;
-		int remain = 0;
-		product.resize(len1 + len2);
-		reverse(a.begin(), a.end());
-		reverse(b.begin(), b.end());
- 
-		for (int i = 0; i < len1; i++)
-		{
-			for (int j = 0; j < len2; j++)
-			{
-				int tmp = (a[i] - '0') * (b[j] - '0') + product[i+j];
- 
-				carry = tmp / 10;
-				remain = tmp % 10;
-				product[i + j + 1] += carry;
-				product[i + j] = remain;
-			}
-		}
- 
-		if (product[len1+len2-1]==0)
-			product.resize(product.size() - 1);
- 
- 
-		reverse(product.begin(), product.end());
-		for (i = 0; i < product.size(); i++)
-		{
-			cout << char(product[i] + '0');if(!((product.size()-1-i)%3)&&i!=product.size()-1)cout<<",";
-		}
-		cout << endl;
 }
-//ÅĞ¶Ï´óĞ¡²¢½øĞĞÒ»´Î¼õ·¨
-int sub(int* dd,int* ds,int len1,int len2)   
+//å¤§æ•°ç›¸ä¹˜
+void multi(string a, string b, int len1, int len2)
 {
-	 int i;
-    if (len1<len2)  return -1;
-    else if (len1==len2)
-        for (i=len1-1;i>=0;i--)
-        {
-            if (dd[i]<ds[i])
-                    return -1;
-            else if (dd[i]>ds[i])
-                break;
-        }
-    for (i=0;i<len1;i++)
-    {
-        dd[i]-=ds[i];
-        if (dd[i]<0)
-        {
-            dd[i]+=10;
-            dd[i+1]--;
-        }
-    }
-    for (i=len1-1;i>=0;i--)
-        if (dd[i])  break;
-    return i+1;
+	int i = 0;
+	string product = "";
+	int carry = 0;
+	int remain = 0;
+	product.resize(len1 + len2);
+	reverse(a.begin(), a.end());
+	reverse(b.begin(), b.end());
+
+	for (i = 0; i < len1; i++)
+	{
+		for (int j = 0; j < len2; j++)
+		{
+			int tmp = (a[i] - '0') * (b[j] - '0') + product[i + j];
+
+			carry = tmp / 10;
+			remain = tmp % 10;
+			product[i + j + 1] += carry;
+			product[i + j] = remain;
+		}
+	}
+
+	if (product[len1 + len2 - 1] == 0)
+		product.resize(product.size() - 1);
+
+
+	reverse(product.begin(), product.end());
+	for (i = 0; i<product.size(); i++)
+	{
+		cout << char(product[i] + '0');if (!((product.size() - 1 - i) % 3) && i != product.size() - 1)cout << ",";
+	}
+	cout << endl;
 }
-//´óÊıÏà³ı
-int chu(int* dd,int* ds,int len1,int len2)
-{ len1=sub(dd,ds,len1,len2);
-    if (len1==-1)
-    {
-        printf("0\n");
-        return 0;
-    }
-    else if (len1==0)
-    {
-        printf("1\n");
-        return 0;
-    }
-    qu[0]=1;
-    int times=len1-len2;
-    for (int i=len1-1;i>=0;i--)             
-    {
-        if (i>=times)
-            ds[i]=ds[i-times];
-        else
-            ds[i]=0;
-    }
-    len2=len1;
-    for (int j=0;j<=times;j++)
-    {
-        int tmp;
-        while ((tmp=sub(dd,ds+j,len1,len2-j))>=0)
-        {
-            len1=tmp;
-            qu[times-j]++;
-        }
-    }
-    for (i=0;i<N;i++)
-    {
-        if (qu[i]>9)
-        {
-            qu[i+1]+=qu[i]/10; 
-            qu[i]%=10;
-        }       
-    }
-    for (i=N-1;qu[i]==0&&i>=0;i--);
-    while (i>=0)
-	{cout<<qu[i--];if(!((i+1)%3)&&i!=-1)cout<<",";}
-    cout<<endl;
+//åˆ¤æ–­å¤§å°å¹¶è¿›è¡Œä¸€æ¬¡å‡æ³•
+int sub(int* dd, int* ds, int len1, int len2)
+{
+	int i;
+	if (len1 < len2)  return -1;
+	else if (len1 == len2)
+		for (i = len1 - 1;i >= 0;i--)
+		{
+			if (dd[i] < ds[i])
+				return -1;
+			else if (dd[i] > ds[i])
+				break;
+		}
+	for (i = 0;i < len1;i++)
+	{
+		dd[i] -= ds[i];
+		if (dd[i] < 0)
+		{
+			dd[i] += 10;
+			dd[i + 1]--;
+		}
+	}
+	for (i = len1 - 1;i >= 0;i--)
+		if (dd[i])  break;
+	return i + 1;
+}
+//å¤§æ•°ç›¸é™¤
+bool Compare(string first, string second)
+{
+	int i = 0;
+	while ('0' == first[i])
+		i++;
+	first.erase(0, i);
+	i = 0;
+	while ('0' == second[i])
+		i++;
+	second.erase(0, i);
+	int len1 = first.size();
+	int len2 = second.size();
+	if (len1 < len2)
+		return false;
+	else if (len1 == len2 && first < second)
+		return false;
+	return true;
+}
+string Subtraction(string s1, string s2)
+{
+	int i = 0;
+	if (s1 == s2)
+		return "0";
+	int len1 = s1.size();
+	int len2 = s2.size();
+	for (i = len2 - 1;i >= 0;i--)
+	{
+		s1[len1 - 1 - i] = '0' + s1[len1 - 1 - i] - s2[len2 - 1 - i];
+	}
+	for (i = len1 - 1;i >= 0;i--)
+	{
+		if (s1[i] < '0')
+		{
+			s1[i] += 10;
+			s1[i - 1]--;
+		}
+	}
+	i = 0;
+	while (s1[i] == '0')
+		i++;
+	s1.erase(0, i);
+	return s1;
+}
+void Output(string result) {
+	for (int i = 0; i < result.size(); i++)
+	{
+		cout <<result[i];if (!((result.size() - 1 - i) % 3) && i != result.size() - 1)cout << ",";
+	}
+}
+void BigDivision(string a, string b, int a1, int b1)
+{
+	string result, s;
+	int count, i;
+	if ("0" == b)
+	{
+		cout << "NULL" << endl;
+		return;
+	}
+	if (!Compare(a, b))
+	{
+		cout << "å•†:" << 0 << " ,ä½™æ•°:" << a << endl;
+		return;
+	}
+	int len = a.size();
+	for (i = 0;i < len;i++)
+	{
+		count = 0;
+		s.push_back(a[i]);
+		while (Compare(s, b))
+		{
+
+			s = Subtraction(s, b);
+			count++;
+		}
+
+		result += char(count + '0');
+	}
+	i = 0;
+	while ('0' == result[i])
+		i++;
+	result.erase(0, i);
+	i = 0;
+	while ('0' == s[i])
+		i++;
+	s.erase(0, i);
+	if (s != "") {
+		if (a1&&b1) { cout << "å•†ä¸º:"; Output(result); cout << "  ï¼Œä½™æ•°: "; Output(s); cout << endl; }
+		else if (!a1&&b1) { cout << "å•†ä¸º:-"; Output(result); cout << "  ï¼Œä½™æ•°:-"; Output(s); cout << endl; }
+		else if (a1 && !b1) { cout << "å•†ä¸º:-"; Output(result); cout << "  ï¼Œä½™æ•°: "; Output(s); cout << endl; }
+		else if (!a1 && !b1) { cout << "å•†ä¸º:"; Output(result); cout << "  ï¼Œä½™æ•°:-"; Output(s); cout<< endl; }
+	}
+	else {
+		if (a1&&b1) { cout << "å•†ä¸º:"; Output(result); cout << "  ï¼Œä½™æ•°:0 " << endl; }
+		else if (!a1&&b1) { cout << "å•†ä¸º:-"; Output(result); cout << "  ï¼Œä½™æ•°:0 " << endl; }
+		else if (a1 && !b1) { cout << "å•†ä¸º:-"; Output(result); cout << "  ï¼Œä½™æ•°:0 " << endl; }
+		else if (!a1 && !b1) { cout << "å•†ä¸º:"; Output(result); cout << "  ï¼Œä½™æ•°:0 " << endl; }
+	}
 }
 int main()
-{string a,b;
-    int count=0,num=0,len1,len2;
-    int c;
-    cout<<"Ñ¡ÔñÄãÒª½øĞĞµÄ²Ù×÷:"<<endl;
-    cout<<"1.³¤ÕûÊı¼Ó·¨ÔËËã"<<endl;
-    cout<<"2.³¤ÕûÊı¼õ·¨ÔËËã"<<endl;
-    cout<<"3.³¤ÕûÊı³Ë·¨ÔËËã"<<endl;
-	cout<<"4.³¤ÕûÊı³ı·¨ÔËËã"<<endl;
-    cout<<"Ñ¡ÔñÄãĞèÒª½øĞĞµÄÔËËã:"<<endl;
-    cin>>c;cin.ignore();
-    switch(c)
-    {
-        case 1:
-        { 
-            cout<<"ÇëÊäÈëµÚÒ»¸öÊı:"<<endl;
-            cin>>a;
-			len1=a.size();
-            cout<<"ÇëÊäÈëµÚ¶ş¸öÊı:"<<endl;
-           	cin>>b;
-			len2=b.size();
-            Node *L1 = createList(a,len1), *L2 = createList(b,len2), *L3 = NULL;
-	      L3 = ListAdd(L1,L2);
-            cout<<"Ïà¼ÓµÄ½á¹ûÊÇ:";
-			PrintListReversing(L3);
-	      cout<<endl;
-        }break;
-        case 2:
-        {
-        cout<<"ÇëÊäÈëµÚÒ»¸öÊı:"<<endl;
-           cin>>a;
-		   len1=a.size();
-            cout<<"ÇëÊäÈëµÚ¶ş¸öÊı:"<<endl;
-            cin>>b;
-            len2=b.size();
-            Node *L1 = createList(a,len1), *L2 = createList(b,len2), *L3 = NULL;
-			if(judge(a,b)){
-			L3 = Listsubstract(L1,L2);
-			cout<<"Ïà¼õµÄ½á¹ûÊÇ:";
-           	PrintListReversing(L3);
-			cout<<endl;}
-			else{L3 = Listsubstract(L2,L1);
-            cout<<"Ïà¼õµÄ½á¹ûÊÇ:-";
-           	PrintListReversing(L3);
-			cout<<endl;}
-        }break;
+{
+	string a, b;
+	int count = 0, num = 0, len1, len2;
+	int c;do {
+		cout << "é€‰æ‹©ä½ è¦è¿›è¡Œçš„æ“ä½œ:" << endl;
+		cout << "1.é•¿æ•´æ•°åŠ æ³•è¿ç®—" << endl;
+		cout << "2.é•¿æ•´æ•°å‡æ³•è¿ç®—" << endl;
+		cout << "3.é•¿æ•´æ•°ä¹˜æ³•è¿ç®—" << endl;
+		cout << "4.é•¿æ•´æ•°é™¤æ³•è¿ç®—" << endl;
+		cout << "é€‰æ‹©ä½ éœ€è¦è¿›è¡Œçš„è¿ç®—:" << endl;
+		cin >> c;cin.ignore();
+		switch (c)
+		{
+		case 1:
+		{
+			cout << "è¯·è¾“å…¥ç¬¬ä¸€ä¸ªæ•°:" << endl;
+			cin >> a;
+			len1 = a.size();
+			cout << "è¯·è¾“å…¥ç¬¬äºŒä¸ªæ•°:" << endl;
+			cin >> b;
+			len2 = b.size();
+			if (a[0] == '-'&&b[0] == '-') {
+				a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
+				Node *L1 = createList(a, len1 - 1), *L2 = createList(b, len2 - 1), *L3 = NULL;
+				L3 = ListAdd(L1, L2);
+				cout << "ç›¸åŠ çš„ç»“æœæ˜¯:-";
+				PrintListReversing(L3);
+				cout << endl;
+			}
+			else if (a[0] == '-'&&b[0] != '-') {
+				a = a.substr(1, len1 - 1);
+				Node *L1 = createList(a, len1 - 1), *L2 = createList(b, len2), *L3 = NULL;
+				if (judge(a, b) > 0) {
+					L3 = Listsubstract(L1, L2);cout << "ç›¸åŠ çš„ç»“æœæ˜¯:-";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == 0) {
+					L3 = Listsubstract(L2, L1);cout << "ç›¸åŠ çš„ç»“æœæ˜¯:";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == -1) {
+					cout << "ç›¸åŠ çš„ç»“æœæ˜¯:0" << endl;
+				}
+			}
+			else if (a[0] != '-'&&b[0] == '-') {
+				b = b.substr(1, len2 - 1);
+				Node *L1 = createList(a, len1), *L2 = createList(b, len2 - 1), *L3 = NULL;
+				if (judge(a, b) > 0) {
+					L3 = Listsubstract(L1, L2);cout << "ç›¸åŠ çš„ç»“æœæ˜¯:";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == 0) {
+					L3 = Listsubstract(L2, L1);cout << "ç›¸åŠ çš„ç»“æœæ˜¯:-";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == -1) {
+					cout << "ç›¸åŠ çš„ç»“æœæ˜¯:0" << endl; 
+				}
+			}
+			else if (a[0] != '-'&&b[0] != '-') {
+				Node *L1 = createList(a, len1), *L2 = createList(b, len2), *L3 = NULL;
+				L3 = ListAdd(L1, L2);
+				cout << "ç›¸åŠ çš„ç»“æœæ˜¯:";
+				PrintListReversing(L3);
+				cout << endl;
+			}
+		}break;
+		case 2:
+		{
+			cout << "è¯·è¾“å…¥ç¬¬ä¸€ä¸ªæ•°:" << endl;
+			cin >> a;
+			len1 = a.size();
+			cout << "è¯·è¾“å…¥ç¬¬äºŒä¸ªæ•°:" << endl;
+			cin >> b;
+			len2 = b.size();
+			if (a[0] != '-'&&b[0] != '-') {
+				Node *L1 = createList(a, len1), *L2 = createList(b, len2), *L3 = NULL;
+				if (judge(a, b) > 0) {
+					L3 = Listsubstract(L1, L2);
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == 0) {
+					L3 = Listsubstract(L2, L1);
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:-";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == -1) {
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:0" << endl; 
+				}
+			}
+			else if (a[0] == '-'&&b[0] == '-') {
+				a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
+				Node *L1 = createList(a, len1 - 1), *L2 = createList(b, len2 - 1), *L3 = NULL;
+				if (judge(a, b) > 0) {
+					L3 = Listsubstract(L1, L2);
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:-";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == 0) {
+					L3 = Listsubstract(L2, L1);
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:";
+					PrintListReversing(L3);
+					cout << endl;
+				}
+				else if (judge(a, b) == -1) {
+					cout << "ç›¸å‡çš„ç»“æœæ˜¯:0" << endl;
+				}
+			}
+			else if (a[0] == '-'&&b[0] != '-') {
+				a = a.substr(1, len1 - 1);
+				Node *L1 = createList(a, len1 - 1), *L2 = createList(b, len2), *L3 = NULL;
+				L3 = ListAdd(L1, L2);
+				cout << "ç›¸å‡çš„ç»“æœæ˜¯:-";
+				PrintListReversing(L3);
+				cout << endl;
+			}
+			else if (a[0] != '-'&&b[0] == '-') {
+				b = b.substr(1, len2 - 1);
+				Node *L1 = createList(a, len1), *L2 = createList(b, len2 - 1), *L3 = NULL;
+				L3 = ListAdd(L1, L2);
+				cout << "ç›¸å‡çš„ç»“æœæ˜¯:";
+				PrintListReversing(L3);
+				cout << endl;
+			}
+		}break;
 		case 3:
 		{
-           cout<<"ÇëÊäÈëµÚÒ»¸öÊı:"<<endl;
-           cin>>a;
-		   len1=a.size();
-            cout<<"ÇëÊäÈëµÚ¶ş¸öÊı:"<<endl;
-            cin>>b;
-            len2=b.size();
-           cout<<"Ïà³ËµÄ½á¹ûÊÇ:";
-			multi(a,b,len1,len2);
+			cout << "è¯·è¾“å…¥ç¬¬ä¸€ä¸ªæ•°:" << endl;
+			cin >> a;
+			len1 = a.size();
+			cout << "è¯·è¾“å…¥ç¬¬äºŒä¸ªæ•°:" << endl;
+			cin >> b;
+			len2 = b.size();
+			if (a[0] != '-'&&b[0] != '-') {
+				cout << "ç›¸ä¹˜çš„ç»“æœæ˜¯:";
+				multi(a, b, len1, len2);
+			}
+			else if (a[0] == '-'&&b[0] == '-') {
+				a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
+				cout << "ç›¸ä¹˜çš„ç»“æœæ˜¯:";
+				multi(a, b, len1 - 1, len2 - 1);
+			}
+			else if (a[0] == '-'&&b[0] != '-') {
+				a = a.substr(1, len1 - 1);cout << "ç›¸ä¹˜çš„ç»“æœæ˜¯:-";
+				multi(a, b, len1 - 1, len2);
+			}
+			else if (a[0] != '-'&&b[0] == '-') {
+				b = b.substr(1, len2 - 1);
+				cout << "ç›¸ä¹˜çš„ç»“æœæ˜¯:-";
+				multi(a, b, len1, len2 - 1);
+			}
 		}break;
 		case 4:
 		{
-			cout<<"ÇëÊäÈëµÚÒ»¸öÊı:"<<endl;
-           cin>>a;
-		   len1=a.size();
-            cout<<"ÇëÊäÈëµÚ¶ş¸öÊı:"<<endl;
-            cin>>b;
-            len2=b.size();
-        for (int k=0,i=len1-1;i>=0;i--)
-        dd[k++]=a[i]-'0';
-        for (k=0,i=len2-1;i>=0;i--)
-        ds[k++]=b[i]-'0';
-           cout<<"Ïà³ıµÄ½á¹ûÊÇ:";
-		   chu(dd,ds,len1,len2);}
-        default:break;
-    }
+			cout << "è¯·è¾“å…¥ç¬¬ä¸€ä¸ªæ•°:" << endl;
+			cin >> a;
+			len1 = a.size();
+			cout << "è¯·è¾“å…¥ç¬¬äºŒä¸ªæ•°:" << endl;
+			cin >> b;
+			len2 = b.size();
+			if (a[0] != '-'&&b[0] != '-') {
+				BigDivision(a, b, 1, 1);
+			}
+			else if (a[0] == '-'&&b[0] == '-') {
+				a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
+				BigDivision(a, b, 0, 0);
+			}
+			else if (a[0] == '-'&&b[0] != '-') {
+				a = a.substr(1, len1 - 1);
+				BigDivision(a, b, 0, 1);
+			}
+			else if (a[0] != '-'&&b[0] == '-') {
+				b = b.substr(1, len2 - 1);
+				BigDivision(a, b, 1, 0);
+			}
+		}
+		default:break;
+		}
 
-
-}
+	} while (1);
+	}
+	
