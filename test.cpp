@@ -340,8 +340,14 @@ void BigDivision(string a, string b, int a1, int b1)
 	}
 	if (!Compare(a, b))
 	{
-		cout << "商:" << 0 << " ,余数:" << a << endl;
-		return;
+		if (a1) {
+			cout << "商:" << 0 << " ,余数:" << a << endl;
+			return;
+		}
+		else {
+			cout << "商:" << 0 << " ,余数:-" << a << endl;
+			return;
+		}
 	}
 	int len = a.size();
 	for (i = 0;i < len;i++)
