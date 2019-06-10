@@ -247,6 +247,7 @@ void multi(string a, string b, int len1, int len2)
 
 
 	reverse(product.begin(), product.end());
+	
 	for (i = 0; i<product.size(); i++)
 	{
 		cout << char(product[i] + '0');if (!((product.size() - 1 - i) % 3) && i != product.size() - 1)cout << ",";
@@ -527,22 +528,34 @@ int main()
 			cin >> b;
 			len2 = b.size();
 			if (a[0] != '-'&&b[0] != '-') {
-				cout << "相乘的结果是:";
-				multi(a, b, len1, len2);
+				if (a[0] == '0' || b[0] == '0')cout << "相乘的结果是:0"<<endl;
+				else {
+					cout << "相乘的结果是:";
+					multi(a, b, len1, len2);
+				}
 			}
 			else if (a[0] == '-'&&b[0] == '-') {
-				a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
-				cout << "相乘的结果是:";
-				multi(a, b, len1 - 1, len2 - 1);
+				if(a[1]=='0'||b[1]=='0')cout<< "相乘的结果是:0"<<endl;
+				else {
+					a = a.substr(1, len1 - 1);b = b.substr(1, len2 - 1);
+					cout << "相乘的结果是:";
+					multi(a, b, len1 - 1, len2 - 1);
+				}
 			}
 			else if (a[0] == '-'&&b[0] != '-') {
-				a = a.substr(1, len1 - 1);cout << "相乘的结果是:-";
-				multi(a, b, len1 - 1, len2);
+			    if(a[1]=='0'||b[0]=='0')cout<< "相乘的结果是:0"<<endl;
+				else {
+					a = a.substr(1, len1 - 1);cout << "相乘的结果是:-";
+					multi(a, b, len1 - 1, len2);
+				}
 			}
 			else if (a[0] != '-'&&b[0] == '-') {
-				b = b.substr(1, len2 - 1);
-				cout << "相乘的结果是:-";
-				multi(a, b, len1, len2 - 1);
+				if(a[0]=='0'||b[1]=='0')cout<< "相乘的结果是:0"<<endl;
+				else {
+					b = b.substr(1, len2 - 1);
+					cout << "相乘的结果是:-";
+					multi(a, b, len1, len2 - 1);
+				}
 			}
 		}break;
 		case 4:
