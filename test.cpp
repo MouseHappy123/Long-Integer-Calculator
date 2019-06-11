@@ -80,8 +80,6 @@ void PrintListReversing(LinkList pHead)
 		if (!((num - flag) % 3) && flag != num)cout << ',';
 	}
 }
-#define N 100000001
-int dd[N], ds[N], qu[N];
 //大数相加
 Node *ListAdd(Node* L1, Node* L2)
 {
@@ -254,33 +252,7 @@ void multi(string a, string b, int len1, int len2)
 	}
 	cout << endl;
 }
-//判断大小并进行一次减法
-int sub(int* dd, int* ds, int len1, int len2)
-{
-	int i;
-	if (len1 < len2)  return -1;
-	else if (len1 == len2)
-		for (i = len1 - 1;i >= 0;i--)
-		{
-			if (dd[i] < ds[i])
-				return -1;
-			else if (dd[i] > ds[i])
-				break;
-		}
-	for (i = 0;i < len1;i++)
-	{
-		dd[i] -= ds[i];
-		if (dd[i] < 0)
-		{
-			dd[i] += 10;
-			dd[i + 1]--;
-		}
-	}
-	for (i = len1 - 1;i >= 0;i--)
-		if (dd[i])  break;
-	return i + 1;
-}
-//大数相除
+//判断大小
 bool Compare(string first, string second)
 {
 	int i = 0;
@@ -299,6 +271,7 @@ bool Compare(string first, string second)
 		return false;
 	return true;
 }
+//进行一次减法
 string Subtraction(string s1, string s2)
 {
 	int i = 0;
@@ -324,12 +297,14 @@ string Subtraction(string s1, string s2)
 	s1.erase(0, i);
 	return s1;
 }
+//输出
 void Output(string result) {
 	for (int i = 0; i < result.size(); i++)
 	{
 		cout <<result[i];if (!((result.size() - 1 - i) % 3) && i != result.size() - 1)cout << ",";
 	}
 }
+//大数相除
 void BigDivision(string a, string b, int a1, int b1)
 {
 	string result, s;
